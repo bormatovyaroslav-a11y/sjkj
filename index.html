@@ -1,0 +1,154 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Парфюмерия 10 мл</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f0f0f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .perfume-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+    .perfume-name {
+      font-weight: 600;
+      font-size: 18px;
+      color: #aa336a;
+      margin-bottom: 10px;
+    }
+    .perfume-price {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    select, input {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .order-btn {
+      background: #aa336a;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .order-btn:hover {
+      background: #8e2856;
+    }
+    .customer-info {
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .customer-info h2 {
+      margin-bottom: 15px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <h1>Парфюмерия • 10 мл</h1>
+
+  <div class="product-grid">
+    <!-- Карточка товара -->
+    <div class="perfume-card">
+      <div class="perfume-name">Barrakat Aqua Crystal</div>
+      <div class="perfume-price">Цена за 10 мл: 30 000 сум</div>
+      <label>Объем:</label>
+      <select id="size-Barrakat">
+        <option value="3.5">3.5 мл</option>
+        <option value="5">5 мл</option>
+        <option value="10" selected>10 мл</option>
+        <option value="20">20 мл</option>
+        <option value="30">30 мл</option>
+        <option value="50">50 мл</option>
+      </select>
+      <button class="order-btn" onclick="order('Barrakat Aqua Crystal', 30000, 'size-Barrakat')">Заказать</button>
+    </div>
+    
+    <!-- Добавь остальные товары по шаблону выше -->
+  </div>
+
+  <!-- 🧾 Данные заказчика -->
+  <div class="customer-info">
+    <h2>Данные для доставки</h2>
+    <input type="text" id="customer-name" placeholder="Ваше имя" required /><br />
+    <input type="text" id="customer-phone" placeholder="Номер телефона" required /><br />
+    <input type="text" id="customer-address" placeholder="Адрес доставки" required /><br />
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    function order(productName, basePrice, selectId) {
+      const volume = parseFloat(document.getElementById(selectId).value);
+      const finalPrice = Math.round((basePrice * volume) / 10);
+
+      // Получаем данные заказчика
+      const name = document.getElementById("customer-name").value.trim();
+      const phone = document.getElementById("customer-phone").value.trim();
+      const address = document.getElementById("customer-address").value.trim();
+
+      if (!name  !phone  !address) {
+        alert("Пожалуйста, заполните все поля для доставки!");
+        return;
+      }
+
+      const message = 🛍 *Новый заказ*\n\n +
+        📦 Товар: ${productName}\n +
+        📏 Объем: ${volume} мл\n +
+        💰 Цена: ${finalPrice.toLocaleString()} сум\n\n +
+        👤 Имя: ${name}\n📞 Телефон: ${phone}\n📍 Адрес: ${address};
+// Отправляем сообщение в Telegram бот
+      fetch(https://api.telegram.org/bot<8218564413:AAEOXm7EXTM_8trFfyqB1gyPdVZWBDMgNwM>/sendMessage, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: <5284464751>,
+          text: message,
+          parse_mode: "Markdown"
+        })
+      })
+      .then(response => {
+        alert("Спасибо за заказ! Мы свяжемся с вами в ближайшее время.");
+        tg.close();
+      })
+      .catch(error => {
+        alert("Ошибка при отправке заказа. Попробуйте позже.");
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>
